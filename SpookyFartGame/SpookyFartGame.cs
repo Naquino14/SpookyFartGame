@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpookyFartGame.entities;
 using SpookyFartGame.player;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SpookyFartGame
@@ -23,10 +26,21 @@ namespace SpookyFartGame
 
         #region instance members
 
+        #region player
+
         Texture2D spookySprite;
         Vector2 playerPos;
         float playerSpeed;
         int score = 0;
+
+        #endregion
+
+        #region pewpews
+
+        Texture2D pewpew1;
+        List<IEntity> pewpews;
+
+        #endregion
 
         #endregion
 
@@ -106,6 +120,9 @@ namespace SpookyFartGame
                 SpriteEffects.None, 
                 0f
             );
+
+            foreach (IEntity pewpew in pewpews)
+                pewpew.Draw(ref _spriteBatch);
 
             _spriteBatch.End();
 
