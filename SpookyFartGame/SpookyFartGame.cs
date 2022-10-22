@@ -48,7 +48,7 @@ namespace SpookyFartGame
             _graphics.ToggleFullScreen();
 
             playerPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            playerSpeed = 100f;
+            playerSpeed = 600f;
 
             base.Initialize();
         }
@@ -69,7 +69,7 @@ namespace SpookyFartGame
 
             // TODO: Add your update logic here
 
-            Direction = Inputs.GetPlayerState(PlayerIndex.One);
+            Direction = Inputs.GetDirectionState();
             playerPos.Y += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * Direction switch { 
                 Direction.up or Direction.upLeft or Direction.upRight => -1,
                 Direction.down or Direction.downLeft or Direction.downRight => 1,
@@ -81,6 +81,8 @@ namespace SpookyFartGame
                 Direction.left or Direction.upLeft or Direction.downLeft => -1,
                 _ => 0
             };
+
+            bool isFiring = Inputs.isFiring();
 
             base.Update(gameTime);
         }

@@ -1,8 +1,10 @@
 ﻿using System                                                                        ;
 using System.Collections.Generic                                                    ;
+#pragma warning disable CS1633  
 using System.Linq                                                                   ;
 using System.Text                                                                   ;
 using System.Threading.Tasks                                                        ;
+#pragma thenitgofartfartfartfarts
 using Microsoft.Xna.Framework                                                       ;
 using Microsoft.Xna.Framework.Input                                                 ;
 
@@ -11,7 +13,7 @@ namespace SpookyFartGame.player{public enum Direction{
     
             public static class Inputs {
         public static Direction 
-GetPlayerState(PlayerIndex index)
+GetDirectionState()
         {
             var kstate = Keyboard.GetState();
             bool up = kstate.IsKeyDown(Keys.W) || kstate.IsKeyDown(Keys.Up)        ,
@@ -42,4 +44,5 @@ right))
            return Direction.right                                                   ;
             else
             return Direction.center                                                 ;
-}}}
+}public static Func<bool> isFiring = () => Keyboard.GetState().IsKeyDown(Keys.Space); /* mfw functional programming
+    }*/}}
