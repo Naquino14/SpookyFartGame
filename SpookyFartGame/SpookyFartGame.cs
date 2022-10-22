@@ -20,6 +20,12 @@ namespace SpookyFartGame
 
         #endregion
 
+        #region instance members
+
+        Texture2D baul;
+
+        #endregion
+
         public SpookyFartGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -39,6 +45,8 @@ namespace SpookyFartGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            baul = Content.Load<Texture2D>("assets/ball");
         }
 
         protected override void Update(GameTime gameTime)
@@ -58,6 +66,12 @@ namespace SpookyFartGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(baul, new Vector2(0, 0), Color.White);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
