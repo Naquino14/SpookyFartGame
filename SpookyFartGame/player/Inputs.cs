@@ -13,15 +13,16 @@ namespace SpookyFartGame.player{public enum Direction{
         public static Direction 
 GetPlayerState(PlayerIndex index)
         {
-            bool up = GamePad.GetState(index).DPad.Up == ButtonState.Pressed        ,
-            down = GamePad.GetState(index).DPad.Down == ButtonState.Pressed         ,
-            left = GamePad.GetState(index).DPad.Left == ButtonState.Pressed         ,
-            right = GamePad.GetState(index).DPad.Right == ButtonState.Pressed       ;
+            var kstate = Keyboard.GetState();
+            bool up = kstate.IsKeyDown(Keys.W) || kstate.IsKeyDown(Keys.Up)        ,
+            down = kstate.IsKeyDown(Keys.S) || kstate.IsKeyDown(Keys.Down)         ,
+            left = kstate.IsKeyDown(Keys.A) || kstate.IsKeyDown(Keys.Left)         ,
+            right = kstate.IsKeyDown(Keys.D) || kstate.IsKeyDown(Keys.Right)       ;
 
-        if (
-up && down 
-                || left && 
-right)
+        if ((
+up && down) 
+                || (left && 
+right))
             return Direction.center                                                 ;
                 else if (up && right)
             return Direction.upRight                                                ;
