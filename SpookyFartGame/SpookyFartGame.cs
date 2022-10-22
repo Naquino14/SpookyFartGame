@@ -23,9 +23,9 @@ namespace SpookyFartGame
 
         #region instance members
 
-        Texture2D baul;
-        Vector2 baulPos;
-        float baulSpeed;
+        Texture2D spookySprite;
+        Vector2 playerPos;
+        float playerSpeed;
         int score = 0;
 
         #endregion
@@ -47,8 +47,8 @@ namespace SpookyFartGame
             _graphics.ApplyChanges();
             _graphics.ToggleFullScreen();
 
-            baulPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            baulSpeed = 10f;
+            playerPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            playerSpeed = 100f;
 
             base.Initialize();
         }
@@ -59,7 +59,7 @@ namespace SpookyFartGame
 
             // TODO: use this.Content to load your game content here
 
-            baul = Content.Load<Texture2D>("assets/ball");
+            spookySprite = Content.Load<Texture2D>("assets/spookyahh");
         }
 
         protected override void Update(GameTime gameTime)
@@ -70,13 +70,13 @@ namespace SpookyFartGame
             // TODO: Add your update logic here
 
             Direction = Inputs.GetPlayerState(PlayerIndex.One);
-            baulPos.Y += baulSpeed * gameTime.ElapsedGameTime.Seconds * Direction switch { 
+            playerPos.Y += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * Direction switch { 
                 Direction.up or Direction.upLeft or Direction.upRight => -1,
                 Direction.down or Direction.downLeft or Direction.downRight => 1,
                 _ => 0
             };
 
-            baulPos.X += baulSpeed * gameTime.ElapsedGameTime.Seconds * Direction switch {
+            playerPos.X += playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * Direction switch {
                 Direction.right or Direction.upRight or Direction.downRight => 1,
                 Direction.left or Direction.upLeft or Direction.downLeft => -1,
                 _ => 0
@@ -94,13 +94,13 @@ namespace SpookyFartGame
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(
-                baul, 
-                baulPos, 
+                spookySprite, 
+                playerPos, 
                 null, 
                 Color.White, 
                 0f, 
-                new(baul.Width / 2, baul.Height / 2), 
-                Vector2.One, 
+                new(spookySprite.Width / 2, spookySprite.Height / 2), 
+                new Vector2(.25f, .25f), 
                 SpriteEffects.None, 
                 0f
             );
