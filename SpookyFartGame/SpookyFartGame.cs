@@ -38,7 +38,7 @@ namespace SpookyFartGame
         #region pewpews
 
         Texture2D pewpew1;
-        List<IEntity> pewpews;
+        public List<IEntity<Entity>> pewpews;
 
         #endregion
 
@@ -121,7 +121,7 @@ namespace SpookyFartGame
                 0f
             );
 
-            foreach (IEntity pewpew in pewpews)
+            foreach (IEntity<Entity> pewpew in pewpews)
                 pewpew.Draw(ref _spriteBatch);
 
             _spriteBatch.End();
