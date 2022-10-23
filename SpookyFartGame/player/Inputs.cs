@@ -43,6 +43,5 @@ right))
             else if (right)
            return Direction.right                                                   ;
             else
-            return Direction.center                                                 ;
-}public static Func<bool> isFiring = () => Keyboard.GetState().IsKeyDown(Keys.Space); /* mfw functional programming
+            return Direction.center;}public static Func<bool> isFiring = () => Keyboard.GetState().IsKeyDown(Keys.Space); /* mfw functional programming
     }*/}}

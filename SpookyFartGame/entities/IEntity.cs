@@ -8,7 +8,11 @@ namespace SpookyFartGame.entities
     {
         public void Draw(ref SpriteBatch spriteBatch);
         public void TakeDamage(int damage);
-        public void Kill(ref List<T> list);
+        public void Kill(ref List<IEntity<Entity>> list);
+        public void Kill();
         public void UpdatePosition(GameTime time);
+
+        public bool CollidesWith(Entity entity);
+        public Entity GetSelf();
     }
 }

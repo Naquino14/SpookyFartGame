@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace SpookyFartGame
 {
@@ -54,6 +55,14 @@ namespace SpookyFartGame
 
         #endregion
 
+        #region enemies
+
+        Texture2D ghost1;
+        Entity currentGhost;
+        //public List<IEntity<Entity>> enemies;
+
+        #endregion
+
         #endregion
 
         public SpookyFartGame()
@@ -93,6 +102,9 @@ namespace SpookyFartGame
             spookySprite = Content.Load<Texture2D>("assets/yoquerotacobell");
             pewpew1 = Content.Load<Texture2D>("assets/pewpew1");
             yoquierotacobell = Content.Load<Song>("assets/yoquerotacobellsfx");
+            ghost1 = Content.Load<Texture2D>("assets/ghost1");
+
+            currentGhost = new Ghost(ghost1, new(400, 400), 0, 0, .3f, 10, 100);
         }
 
         protected override void Update(GameTime gameTime)
@@ -131,8 +143,25 @@ namespace SpookyFartGame
                 lastFireTime = (float)gameTime.TotalGameTime.TotalSeconds;
             }
 
-            foreach (var pewpew in pewpews)
+            for (int i = 0; i < pewpews.Count; i++)
+            {
+                IEntity<Entity> pewpew;
+                try {
+                    pewpew = pewpews[i];
+                } catch
+                { continue; }
                 pewpew.UpdatePosition(gameTime);
+                if (currentGhost is not null && pewpew.CollidesWith(currentGhost))
+                {
+                           currentGhost.TakeDamage((pewpew.GetSelf() as PewPew).Damage);
+                    pewpew.Kill(ref pewpews);
+                }
+                if (pewpew.GetSelf().Position.X > _graphics.PreferredBackBufferWidth
+                    || pewpew.GetSelf().Position.X < 0
+                    || pewpew.GetSelf().Position.Y > _graphics.PreferredBackBufferHeight
+                    || pewpew.GetSelf().Position.Y < 0)
+                    pewpew.Kill(ref pewpews);
+            }
 
             base.Update(gameTime);
         }
@@ -159,6 +188,13 @@ namespace SpookyFartGame
 
             foreach (IEntity<Entity> pewpew in pewpews)
                 pewpew.Draw(ref _spriteBatch);
+
+            //foreach (var ghost in enemies)
+            //    ghost.Draw(ref _spriteBatch);
+            if (currentGhost is not null && !currentGhost.IsDead)
+                currentGhost.Draw(ref _spriteBatch);
+            else
+                currentGhost = null;
 
             _spriteBatch.End();
 

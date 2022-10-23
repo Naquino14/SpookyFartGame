@@ -22,5 +22,7 @@ namespace SpookyFartGame.entities
                 -1 * Speed * (float)Math.Cos(Rotation) * (float)time.ElapsedGameTime.TotalSeconds
             );
         }
+
+        public override Entity GetSelf() => this;
     }
 }

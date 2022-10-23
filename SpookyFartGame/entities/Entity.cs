@@ -14,6 +14,8 @@ namespace SpookyFartGame.entities
         public float LayerDepth { get; private set; }
         public float Scale { get; set; }
         public float Speed { get; private set; }
+        public Rectangle hitbox { get; private set; }
+        public bool IsDead { get; private set; } = false;
 
         public int Health { get; private set; }
 
@@ -26,6 +28,7 @@ namespace SpookyFartGame.entities
             Scale = scale;
             Speed = speed;
             Health = initialHealth;
+            hitbox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
         }
 
         public void Draw(ref SpriteBatch spriteBatch)
@@ -42,11 +45,32 @@ namespace SpookyFartGame.entities
             );
 
         public void TakeDamage(int damage)
-            => Health -= damage;
-
-        public void Kill(ref List<Entity> list) 
-            => list.Remove(this);
+        {
+            Health -= damage;
+            if (Health <= 0)
+                Kill();
+        }
 
         public abstract void UpdatePosition(GameTime time);
+
+        public bool CollidesWith(Entity entity)
+            => new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height)
+            .Intersects(new Rectangle(
+                (int)entity.Position.X - (int)(entity.Texture.Width * entity.Scale / 2),
+                (int)entity.Position.Y - (int)(entity.Texture.Height * entity.Scale / 2),
+                (int)(entity.Texture.Width * entity.Scale), 
+                (int)(entity.Texture.Height * entity.Scale))
+            );
+
+        public abstract Entity GetSelf();
+
+        public void Kill(ref List<IEntity<Entity>> list)
+        {
+            list.Remove(this);
+            Kill();
+        }
+
+        public void Kill() => IsDead = true;
+
     }
 }
