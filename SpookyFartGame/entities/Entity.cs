@@ -47,5 +47,6 @@ namespace SpookyFartGame.entities
         public void Kill(ref List<Entity> list) 
             => list.Remove(this);
 
+        public abstract void UpdatePosition(GameTime time);
     }
 }

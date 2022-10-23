@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using SpookyFartGame.entities;
 using SpookyFartGame.player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -21,6 +24,7 @@ namespace SpookyFartGame
         #region static members
 
         public static Direction Direction { get; private set; }
+        public static Random random;
 
         #endregion
 
@@ -32,6 +36,14 @@ namespace SpookyFartGame
         Vector2 playerPos;
         float playerSpeed;
         int score = 0;
+        float lastFireTime;
+        float fireRate;
+
+        #endregion
+
+        #region sfx
+
+        Song yoquierotacobell;
 
         #endregion
 
@@ -61,10 +73,15 @@ namespace SpookyFartGame
             _graphics.ApplyChanges();
             _graphics.ToggleFullScreen();
 
+            pewpews = new();
+            random = new();
+
             playerPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             playerSpeed = 600f;
+            fireRate = .08f;
 
             base.Initialize();
+            MediaPlayer.Play(yoquierotacobell);
         }
 
         protected override void LoadContent()
@@ -73,7 +90,9 @@ namespace SpookyFartGame
 
             // TODO: use this.Content to load your game content here
 
-            spookySprite = Content.Load<Texture2D>("assets/spookyahh");
+            spookySprite = Content.Load<Texture2D>("assets/yoquerotacobell");
+            pewpew1 = Content.Load<Texture2D>("assets/pewpew1");
+            yoquierotacobell = Content.Load<Song>("assets/yoquerotacobellsfx");
         }
 
         protected override void Update(GameTime gameTime)
@@ -97,13 +116,30 @@ namespace SpookyFartGame
             };
 
             bool isFiring = Inputs.isFiring();
+            
+            if (isFiring && gameTime.TotalGameTime.TotalSeconds - lastFireTime > fireRate)
+            {
+                pewpews.Add(new PewPew(pewpew1,
+                    new(playerPos.X, playerPos.Y - spookySprite.Height / 8),
+                    rotation: (float)(Math.PI / 180) * (float)random.NextDouble() * 10 * (random.NextDouble() > .5f ? 1 : -1), // random angle between -3 and 3 degrees
+                    0f,
+                    scale: (float)Math.Max(.75, (float)(random.NextDouble() * 2) % 2),
+                    speed: 400,
+                    initialHealth: 1,
+                    damage: 50
+                ));
+                lastFireTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            }
+
+            foreach (var pewpew in pewpews)
+                pewpew.UpdatePosition(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 
