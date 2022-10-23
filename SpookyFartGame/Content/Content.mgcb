@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:assets/ball.png
 
+#begin assets/fartsfx.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:assets/fartsfx.mp3
+
 #begin assets/ghost1.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -45,6 +45,7 @@ namespace SpookyFartGame
         #region sfx
 
         Song yoquierotacobell;
+        Song fartsfx;
 
         #endregion
 
@@ -103,6 +104,7 @@ namespace SpookyFartGame
             pewpew1 = Content.Load<Texture2D>("assets/pewpew1");
             yoquierotacobell = Content.Load<Song>("assets/yoquerotacobellsfx");
             ghost1 = Content.Load<Texture2D>("assets/ghost1");
+            fartsfx = Content.Load<Song>("assets/fartsfx");
 
             currentGhost = new Ghost(ghost1, new(400, 400), 0, 0, .3f, 10, 100);
         }
@@ -131,6 +133,7 @@ namespace SpookyFartGame
             
             if (isFiring && gameTime.TotalGameTime.TotalSeconds - lastFireTime > fireRate)
             {
+                MediaPlayer.Play(fartsfx);
                 pewpews.Add(new PewPew(pewpew1,
                     new(playerPos.X, playerPos.Y - spookySprite.Height / 8),
                     rotation: (float)(Math.PI / 180) * (float)random.NextDouble() * 10 * (random.NextDouble() > .5f ? 1 : -1), // random angle between -3 and 3 degrees
