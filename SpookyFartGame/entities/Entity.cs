@@ -19,6 +19,16 @@ namespace SpookyFartGame.entities
 
         public int Health { get; private set; }
 
+        /// <summary>
+        /// Constructs a new entity
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation">in radians!</param>
+        /// <param name="layerDepth"></param>
+        /// <param name="scale"></param>
+        /// <param name="speed"></param>
+        /// <param name="initialHealth"></param>
         public Entity(Texture2D texture, Vector2 position, float rotation, float layerDepth, float scale, float speed, int initialHealth = 100)
         {
             Texture = texture;
@@ -31,6 +41,10 @@ namespace SpookyFartGame.entities
             hitbox = new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
         }
 
+        /// <summary>
+        /// Draws the entity on the screen
+        /// </summary>
+        /// <param name="spriteBatch">A reference to the spritebatch variable</param>
         public void Draw(ref SpriteBatch spriteBatch)
             => spriteBatch.Draw(
                 Texture, 
@@ -44,6 +58,10 @@ namespace SpookyFartGame.entities
                 LayerDepth
             );
 
+        /// <summary>
+        /// Deducts health from the entity
+        /// </summary>
+        /// <param name="damage">The amount of damage that the entity takes.</param>
         public void TakeDamage(int damage)
         {
             Health -= damage;
@@ -53,6 +71,11 @@ namespace SpookyFartGame.entities
 
         public abstract void UpdatePosition(GameTime time);
 
+        /// <summary>
+        /// Checks to see if this entity collides with another entity
+        /// </summary>
+        /// <param name="entity">The target entity</param>
+        /// <returns>True if this entity collides with the target entity</returns>
         public bool CollidesWith(Entity entity)
             => new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height)
             .Intersects(new Rectangle(
@@ -64,12 +87,19 @@ namespace SpookyFartGame.entities
 
         public abstract Entity GetSelf();
 
+        /// <summary>
+        /// Kills this entity by removing it from the list of entities
+        /// </summary>
+        /// <param name="list"></param>
         public void Kill(ref List<IEntity<Entity>> list)
         {
             list.Remove(this);
             Kill();
         }
 
+        /// <summary>
+        /// Sets the is dead property to true
+        /// </summary>
         public void Kill() => IsDead = true;
 
     }
